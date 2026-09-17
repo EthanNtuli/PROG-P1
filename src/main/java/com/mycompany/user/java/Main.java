@@ -44,12 +44,9 @@ public class Main {
         System.out.print("Enter password: ");
         String loginPassword = scanner.nextLine();
 
-        obj.loginUser(loginUsername, loginPassword);
-        obj.returnLoginStatus();
+        obj.loginUser( firstName,  lastName,  username,  password,  loginUsername, loginPassword);
+        obj.returnLoginStatus(loginResult);
    
-        
-        
-        
         scanner.close();
     }
 }

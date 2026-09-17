@@ -91,33 +91,32 @@ public class User {
         return result;
     }
 
-    public boolean loginUser(String firstName, String lastName, String username, String password, String enteredUser, String enteredPassword) { //Sir check, Ron fix (entered)
+    public boolean loginUser(String firstName, String lastName, String username, String password, String loginUsername, String loginPassword) { //Sir check, Ron fix (entered)
         
         boolean login = true;
         String result;
         
-        if(enteredUser.equals(username)&& eneteredPassword.equals(password)){
+        if(loginUsername.equals(username)&& loginPassword.equals(password)){
             login = true;
-            result = "welcome " + frirstName + "" + lastName + ".It is great to see you once again.";
+            result = "welcome " + firstName + "" + lastName + ".It is great to see you once again.";
         }else {
             login = false;
-            result = "Your Password or USername is incorrect, please try again.";
+            result = "Your Password or Username is incorrect, please try again.";
         }
-        loginSuccessful = this.username.equals(username) && this.password.equals(password);
-        System.out.println("\nLogin check: " + loginSuccessful);
-        return loginSuccessful;
+        System.out.println("result");
+        return login;
     }
 
-    public String returnLoginStatus() {
-        String result;
+    public String returnLoginStatus(boolean loginResult) {
+        String status;
 
-        if (loginSuccessful) {
-            result = "Welcome " + firstName + ", " + lastName + " it is great to see you.";
+        if (loginResult) {
+            status = "Login was successful";
         } else {
-            result = "Username or password incorrect, please try again.";
+            status = "Login was Unsuccessful";
         }
 
-        System.out.println("\n" + result);
-        return result;
+        System.out.println(status);
+        return status;
     }
 }
