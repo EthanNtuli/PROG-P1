@@ -38,15 +38,13 @@ public class Main {
         String registerResult = obj.registerUser();
         String loginUsername = "";
         String loginPassword = "";
-
-        System.out.println("\n=== Login ===");
         
         if(registerResult.equals("Registration successful! You may now log in.")){
         System.out.print("Enter username: ");
-        String loginUsername = scanner.nextLine();
+        loginUsername = scanner.nextLine();
         
         System.out.print("Enter password: ");
-        String loginPassword = scanner.nextLine();
+        loginPassword = scanner.nextLine();
         }else {
             System.out.println("Password or Username are invalid.");
         }

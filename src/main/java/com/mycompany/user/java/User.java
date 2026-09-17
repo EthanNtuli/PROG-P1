@@ -26,7 +26,7 @@ public class User {
         this.cellPhoneNumber = cellPhoneNumber;
     }
 
-    public static boolean checkUserName(String username) { //Ron fix
+    public boolean checkUserName(String username) { //Ron fix
         boolean UN;
 
         if (username.contains("_") && username.length() <= 5) {
@@ -40,11 +40,11 @@ public class User {
         return UN;
     }
 
-    public static boolean checkPasswordComplexity(String password) {  //Ron Fix
+    public boolean checkPasswordComplexity(String password) {  //Ron Fix
         String regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,}$";
         boolean PC;
 
-        if (password.equals(regex)) {
+        if (password.matches(regex)) {
             System.out.println("Passwird successfully captured");
             PC = true; 
         } else {
@@ -55,7 +55,7 @@ public class User {
         return PC;
     }
 
-    public static boolean checkCellPhoneNumber(String cellPhoneNumber) { //Ron Fix
+    public boolean checkCellPhoneNumber(String cellPhoneNumber) { //Ron Fix
         String regex = "^\\+27\\d{1,10}$";
         boolean CN;
         if(cellPhoneNumber.matches(regex)){
@@ -103,7 +103,7 @@ public class User {
             login = false;
             result = "Your Password or Username is invalid, please try again.";
         }
-        System.out.println("result");
+        System.out.println(result);
         return login;
     }
 
