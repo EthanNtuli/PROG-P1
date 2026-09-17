@@ -34,19 +34,23 @@ public class Main {
         String cellPhoneNumber = scanner.nextLine();
 
         User obj = new User(firstName, lastName, username, password, cellPhoneNumber);
-        obj.registerUser(username, password, cellPhoneNumber);
+        obj.registerUser();
+        String registerResult = obj.registerUser();
+        String loginUsername = "";
+        String loginPassword = "";
 
         System.out.println("\n=== Login ===");
-
+        
+        if(registerResult.equals("Registration successful! You may now log in.")){
         System.out.print("Enter username: ");
         String loginUsername = scanner.nextLine();
-
+        
         System.out.print("Enter password: ");
         String loginPassword = scanner.nextLine();
-
-        obj.loginUser( firstName,  lastName,  username,  password,  loginUsername, loginPassword);
-        obj.returnLoginStatus(loginResult);
-   
-        scanner.close();
+        }else {
+            System.out.println("Password or Username are invalid.");
+        }
+        
+        System.out.println(obj.returnLoginStatus(firstName, lastName, username, password, loginUsername, loginPassword));
     }
 }

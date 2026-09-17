@@ -69,7 +69,7 @@ public class User {
         return CN;
     }
 
-    public String registerUser(String username, String password, String cellPhoneNumber) { //Ron fix
+    public String registerUser() { //Ron fix
         String result;
 
         if (!checkUserName(username)) {
@@ -101,22 +101,19 @@ public class User {
             result = "welcome " + firstName + "" + lastName + ".It is great to see you once again.";
         }else {
             login = false;
-            result = "Your Password or Username is incorrect, please try again.";
+            result = "Your Password or Username is invalid, please try again.";
         }
         System.out.println("result");
         return login;
     }
 
-    public String returnLoginStatus(boolean loginResult) {
-        String status;
+    public String returnLoginStatus(String firstName, String lastName, String username, String password, String loginUsername, String loginPassword) {
+        
 
-        if (loginResult) {
-            status = "Login was successful";
+        if (loginUser(firstName, lastName, username, password, loginUsername, loginPassword)) {
+            return "Login was successful";
         } else {
-            status = "Login was Unsuccessful";
+            return "Login was Unsuccessful";
         }
-
-        System.out.println(status);
-        return status;
     }
 }
