@@ -26,7 +26,7 @@ public class User {
         this.cellPhoneNumber = cellPhoneNumber;
     }
 
-    public boolean checkUserName(String username) { //Ron fix
+    public boolean checkUserName(String username) { 
         boolean UN;
 
         if (username.contains("_") && username.length() <= 5) {
@@ -40,7 +40,7 @@ public class User {
         return UN;
     }
 
-    public boolean checkPasswordComplexity(String password) {  //Ron Fix
+    public boolean checkPasswordComplexity(String password) {  
         String regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,}$";
         boolean PC;
 
@@ -55,7 +55,7 @@ public class User {
         return PC;
     }
 
-    public boolean checkCellPhoneNumber(String cellPhoneNumber) { //Ron Fix
+    public boolean checkCellPhoneNumber(String cellPhoneNumber) { 
         String regex = "^\\+27\\d{1,10}$";
         boolean CN;
         if(cellPhoneNumber.matches(regex)){
@@ -69,7 +69,7 @@ public class User {
         return CN;
     }
 
-    public String registerUser() { //Ron fix
+    public String registerUser() {
         String result;
 
         if (!checkUserName(username)) {
