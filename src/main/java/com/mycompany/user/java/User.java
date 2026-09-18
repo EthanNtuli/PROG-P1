@@ -4,7 +4,6 @@
 package com.mycompany.user.java;
 
 /**
- * Handles registration and login for a chat app user.
  *
  * @author Anele
  */
@@ -16,7 +15,8 @@ public class User {
     private String password;
     private String cellPhoneNumber;
     private boolean loginSuccessful;
-
+    
+    //creates a new user and stores the details given at registration.
     public User(String firstName, String lastName, String username,
             String password, String cellPhoneNumber) {
         this.firstName = firstName;
@@ -25,7 +25,8 @@ public class User {
         this.password = password;
         this.cellPhoneNumber = cellPhoneNumber;
     }
-
+    //Checks that the username contains an underscore and is no more than five characters long.
+    
     public boolean checkUserName(String username) { 
         boolean UN;
 
@@ -39,7 +40,8 @@ public class User {
         System.out.println("\nUsername check: " + UN);
         return UN;
     }
-
+    
+    //Checks that the password meets the complexity rules using a regular expression
     public boolean checkPasswordComplexity(String password) {  
         String regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,}$";
         boolean PC;
@@ -54,7 +56,8 @@ public class User {
         System.out.println("Password check: " + PC);
         return PC;
     }
-
+    
+    //Checks that the cell phone number starts with +27|0 and has no more than ten digits after it.
     public boolean checkCellPhoneNumber(String cellPhoneNumber) { 
         String regex = "^\\+27\\d{1,10}$";
         boolean CN;
@@ -69,6 +72,7 @@ public class User {
         return CN;
     }
 
+    //Runs the three checks in order and returns the message matching the first one that fails, or a success message.
     public String registerUser() {
         String result;
 
@@ -80,8 +84,8 @@ public class User {
             result = "Password is not correctly formatted; please ensure that the "
                     + "password contains at least eight characters, a capital letter, "
                     + "a number, and a special character.";
-        } else if (!checkCellPhoneNumber(cellPhoneNumber)) {
-            result = "Cell number is incorrectly formatted or does not contain an "
+        } else if (!checkCellPhoneNumber(cellPhoneNumber)) {                        //The reason i added the if even though it wasnt mandatory was 
+            result = "Cell number is incorrectly formatted or does not contain an " //the logic behind it is that without the if a user could login even though the cell numbers are incorrectly formated
                     + "international code; please correct the number and try again.";
         } else {
             result = "Registration successful! You may now log in.";
@@ -91,6 +95,7 @@ public class User {
         return result;
     }
 
+    //Compares the entered login details against the registered details and returns whether they match or not.
     public boolean loginUser(String firstName, String lastName, String username, String password, String loginUsername, String loginPassword) { //Sir check, Ron fix (entered)
         
         boolean login = true;
@@ -107,6 +112,7 @@ public class User {
         return login;
     }
 
+    //Returns a simple sucess or failure message based on the outcome of loginUser.
     public String returnLoginStatus(String firstName, String lastName, String username, String password, String loginUsername, String loginPassword) {
         
 

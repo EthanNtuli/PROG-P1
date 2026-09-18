@@ -12,7 +12,8 @@ package com.mycompany.user.java;
 import java.util.Scanner;
 
 public class Main {
-
+    
+    //Runs the console flow: collects registration details, then attempts a login.
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
