@@ -43,7 +43,7 @@ public class User {
     
     //Checks that the password meets the complexity rules using a regular expression
     public boolean checkPasswordComplexity(String password) {  
-        String regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,}$";
+        String regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+=-]).{8,}$";   //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 14 September 2026].
         boolean PC;
 
         if (password.matches(regex)) {
@@ -59,7 +59,7 @@ public class User {
     
     //Checks that the cell phone number starts with +27|0 and has no more than ten digits after it.
     public boolean checkCellPhoneNumber(String cellPhoneNumber) { 
-        String regex = "^\\+27\\d{1,10}$";
+        String regex = "^\\+27\\d{1,10}$";  //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 14 September 2026].
         boolean CN;
         if(cellPhoneNumber.matches(regex)){
             System.out.println("Cell phone number successfully addded.");
@@ -80,7 +80,7 @@ public class User {
             result = "Username is not correctly formatted; please ensure that your "
                     + "username contains an underscore and is no more than five "
                     + "characters in length.";
-        } else if (!checkPasswordComplexity(password)) {
+        } else if (!checkPasswordComplexity(password)) {  //NetBeans, 2024. JUnit 5 Tutorial [online]. Apache NetBeans. Available at: https://netbeans.apache.org/tutorial/main/kb/docs/java/junit-intro/ [Accessed 14 September 2026].
             result = "Password is not correctly formatted; please ensure that the "
                     + "password contains at least eight characters, a capital letter, "
                     + "a number, and a special character.";
@@ -123,3 +123,17 @@ public class User {
         }
     }
 }
+
+
+
+/*Reference list:
+Java Brains, 2019. JUnit 5 Basics [YouTube playlist]. Available at: https://www.youtube.com/watch?v=2E3WqYupx7c&list=PLqq-6Pq4ITTa4ad5JISViSb2FVG8Vwa4o [Accessed 14 September 2026].
+
+NetBeans, 2024. JUnit 5 Tutorial [online]. Apache NetBeans. Available at: https://netbeans.apache.org/tutorial/main/kb/docs/java/junit-intro/ [Accessed 14 September 2026].
+
+Oracle, 2024. Lesson: Regular Expressions [online]. The Java Tutorials. Available at: https://docs.oracle.com/javase/tutorial/essential/regex/ [Accessed 14 September 2026].
+
+Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 14 September 2026].
+
+Stack Overflow, 2023. How to fix "java: package org.junit.jupiter.api does not exist" [online]. Available at: https://stackoverflow.com/questions/75092698/ [Accessed 14 September 2026].
+*/
