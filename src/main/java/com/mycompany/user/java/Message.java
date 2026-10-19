@@ -34,7 +34,7 @@ private String generateMessageID() {
         return String.valueOf(number).substring(0, 10);
     }
     public boolean checkMessageID() {
-        return messageID.length() <= 10;
+        return messageID.length() == 10;
     }
 
     public String checkRecipientCell() {
