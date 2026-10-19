@@ -17,7 +17,6 @@ public class Message {
     private String messageText;
     private String messageStatus;
 
-    // NO ARRAYS: Using StringBuilder to keep track of all sent messages
     private static StringBuilder allSentMessages = new StringBuilder();
     private static int totalMessagesSent = 0;
 
@@ -26,11 +25,11 @@ public class Message {
         this.recipient = recipient;
         this.messageText = messageText;
         this.messageID = generateMessageID();
-        this.messageHash = createMessageHash();
+        this.messageHash = createMessageHash(this.messageID, messageNumber, messageText);
     }
 private String generateMessageID() {
         Random rand = new Random();
-        long number = (long) (rand.nextDouble() * 900_000_000L) + 100_000_000L;
+        long number = (long) (rand.nextDouble() * 9_000_000_000L) + 1_000_000_000L;
         return String.valueOf(number).substring(0, 10);
     }
     public boolean checkMessageID() {
