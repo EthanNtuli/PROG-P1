@@ -27,26 +27,35 @@ public class Message {
         this.messageID = generateMessageID();
         this.messageHash = createMessageHash(this.messageID, messageNumber, messageText);
     }
-private String generateMessageID() {
+
+    private String generateMessageID() {
         Random rand = new Random();
         long number = (long) (rand.nextDouble() * 9_000_000_000L) + 1_000_000_000L;
         return String.valueOf(number).substring(0, 10);
     }
+
     public boolean checkMessageID() {
         return messageID.length() == 10;
     }
 
+    public String checkMessageLength() {
+        if (messageText.length() <= 250) {
+            return "Message ready to send.";
+        }
+        int excess = messageText.length() - 250;
+        return "Message exceeds 250 characters by " + excess + "; please reduce the size.";
+    }
+
     public String checkRecipientCell(String RecipientCell) {
-       String regex = "^\\+27\\d{1,10}$";  //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
-        if(RecipientCell.matches(regex)){
-            return "Cell phone number successfully addded.";
-        } else{
-            return "Cell phone number incorrectly formatted or does not contain international.";
-    }
+        String regex = "^\\+27\\d{1,10}$";  //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
+        if (RecipientCell.matches(regex)) {
+            return "Cell phone number successfully captured.";
+        } else {
+            return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
+        }
     }
 
-
-public static String createMessageHash(String messageID, int messageNumber, String message) {
+    public static String createMessageHash(String messageID, int messageNumber, String message) {
 
         String firstTwoID = messageID.substring(0, 2);
         String userMessage = message.trim();
@@ -63,6 +72,7 @@ public static String createMessageHash(String messageID, int messageNumber, Stri
         int lastSpace = userMessage.lastIndexOf(" ");
 
         String lastWord = userMessage.substring(lastSpace + 1);
+        lastWord = lastWord.replaceAll("[^A-Za-z0-9]", "");
 
         String messageHash = firstTwoID + ":" + messageNumber + ":" + firstWord + lastWord;
         return messageHash.toUpperCase();
@@ -75,16 +85,16 @@ public static String createMessageHash(String messageID, int messageNumber, Stri
         System.out.println("2. Disregard Message");
         System.out.println("3. Store Message to send later");
         System.out.print("Enter choice: ");
-        
+
         String choice = scanner.nextLine();
 
         if (choice.equals("1")) {
-            this.messageStatus = "Message successfully sent";
+            this.messageStatus = "Message successfully sent.";
             totalMessagesSent++;
             // NO ARRAYS: Append to the StringBuilder
             allSentMessages.append("- ").append(this.messageText).append("\n");
             return this.messageStatus;
-            
+
         } else if (choice.equals("2")) {
             System.out.println("Press 0 to delete the message");
             System.out.print("Enter 0: ");
@@ -95,12 +105,12 @@ public static String createMessageHash(String messageID, int messageNumber, Stri
                 this.messageStatus = "Deletion cancelled.";
             }
             return this.messageStatus;
-            
+
         } else if (choice.equals("3")) {
-            this.messageStatus = "Message successfully stored";
-            storeMessage(); 
+            this.messageStatus = "Message successfully stored.";
+            storeMessage();
             return this.messageStatus;
-            
+
         } else {
             this.messageStatus = "Invalid option. Message discarded.";
             return this.messageStatus;
