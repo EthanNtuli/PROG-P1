@@ -1,0 +1,155 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
+package com.mycompany.user.java;
+
+import java.util.Random;
+import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.IOException;
+
+public class Message {
+    private String messageID;
+    private int messageNumber;
+    private String messageHash;
+    private String recipient;
+    private String messageText;
+    private String messageStatus;
+
+    // NO ARRAYS: Using StringBuilder to keep track of all sent messages
+    private static StringBuilder allSentMessages = new StringBuilder();
+    private static int totalMessagesSent = 0;
+
+    public Message(int messageNumber, String recipient, String messageText) {
+        this.messageNumber = messageNumber;
+        this.recipient = recipient;
+        this.messageText = messageText;
+        this.messageID = generateMessageID();
+        this.messageHash = createMessageHash();
+    }
+private String generateMessageID() {
+        Random rand = new Random();
+        long number = (long) (rand.nextDouble() * 900_000_000L) + 100_000_000L;
+        return String.valueOf(number).substring(0, 10);
+    }
+    public boolean checkMessageID() {
+        return messageID.length() <= 10;
+    }
+
+    public String checkRecipientCell() {
+       String regex = "^\\+27\\d{1,10}$";  //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
+        if(RecipientCell.matches(regex)){
+            return "Cell phone number successfully addded."
+        } else{
+            return "Cell phone number incorrectly formatted or does not contain international.";
+    }
+    }
+
+    // NO ARRAYS: Completely rewritten to use indexOf and substring instead of split()
+    public String createMessageHash() {
+        String text = messageText.trim();
+        String firstWord = "";
+        String lastWord = "";
+
+        int firstSpace = text.indexOf(" ");
+        int lastSpace = text.lastIndexOf(" ");
+
+        if (firstSpace == -1) {
+            // It's a single word
+            firstWord = text;
+            lastWord = text;
+        } else {
+            firstWord = text.substring(0, firstSpace);
+            lastWord = text.substring(lastSpace + 1);
+        }
+
+        String hash = messageID.substring(0, 2) + ":" + messageNumber + ":" + firstWord + lastWord;
+        return hash.toUpperCase();
+    }
+
+    public String sentMessage(Scanner scanner) {
+        System.out.println("\n------------------------------------------");
+        System.out.println("What would you like to do with this message?");
+        System.out.println("1. Send Message");
+        System.out.println("2. Disregard Message");
+        System.out.println("3. Store Message to send later");
+        System.out.print("Enter choice: ");
+        
+        String choice = scanner.nextLine();
+
+        if (choice.equals("1")) {
+            this.messageStatus = "Message successfully sent";
+            totalMessagesSent++;
+            // NO ARRAYS: Append to the StringBuilder
+            allSentMessages.append("- ").append(this.messageText).append("\n");
+            return this.messageStatus;
+            
+        } else if (choice.equals("2")) {
+            System.out.println("Press 0 to delete the message");
+            System.out.print("Enter 0: ");
+            String confirm = scanner.nextLine();
+            if (confirm.equals("0")) {
+                this.messageStatus = "Message deleted by user.";
+            } else {
+                this.messageStatus = "Deletion cancelled.";
+            }
+            return this.messageStatus;
+            
+        } else if (choice.equals("3")) {
+            this.messageStatus = "Message successfully stored";
+            storeMessage(); 
+            return this.messageStatus;
+            
+        } else {
+            this.messageStatus = "Invalid option. Message discarded.";
+            return this.messageStatus;
+        }
+    }
+
+    public static int returnTotalMessagess() {
+        return totalMessagesSent;
+    }
+
+    // NO ARRAYS: Return the StringBuilder contents as a String
+    public static String printMessages() {
+        if (allSentMessages.length() == 0) {
+            return "No messages sent yet.";
+        }
+        return allSentMessages.toString();
+    }
+
+    public void storeMessage() {
+        String jsonString = "{\n" +
+                "  \"messageID\": \"" + messageID + "\",\n" +
+                "  \"messageNumber\": " + messageNumber + ",\n" +
+                "  \"recipient\": \"" + recipient + "\",\n" +
+                "  \"messageText\": \"" + messageText + "\",\n" +
+                "  \"messageHash\": \"" + messageHash + "\",\n" +
+                "  \"status\": \"" + messageStatus + "\"\n" +
+                "}";
+
+        try {
+            FileWriter writer = new FileWriter("messages.json", true);
+            writer.write(jsonString + ",\n");
+            writer.close();
+            System.out.println("Message successfully stored in JSON.");
+        } catch (IOException e) {
+            System.out.println("Error saving to JSON: " + e.getMessage());
+        }
+    }
+
+    public void printDetails() {
+        System.out.println("\n--- Message Details ---");
+        System.out.println("ID: " + messageID);
+        System.out.println("Hash: " + messageHash);
+        System.out.println("Recipient: " + recipient);
+        System.out.println("Text: " + messageText);
+        System.out.println("-----------------------");
+    }
+
+    public String getMessageID() { return messageID; }
+    public String getMessageHash() { return messageHash; }
+    public String getMessageText() { return messageText; }
+    public String getRecipient() { return recipient; }
+}

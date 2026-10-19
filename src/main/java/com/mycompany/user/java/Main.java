@@ -51,9 +51,99 @@ public class Main {
         }
         
         System.out.println(obj.returnLoginStatus(firstName, lastName, username, password, loginUsername, loginPassword));
-    }
+        
 }
 
+// --- PART 2: MENU, LOOPS & MESSAGES ---
+        if (isLoggedIn) {
+            System.out.println("\nWelcome to the Chat App!");
+            boolean running = true;
+            
+            while (running) {
+                // Exact Menu from Rubric
+                System.out.println("\n--- MENU ---");
+                System.out.println("1) Send Messages");
+                System.out.println("2) Show recently sent messages");
+                System.out.println("3) Quit");
+                System.out.print("Choose an option (1-3): ");
+                
+                String choice = scanner.nextLine();
+
+                if (choice.equals("1")) {
+                    System.out.print("How many messages do you want to send? ");
+                    int numMessages = 0;
+                    
+                    try {
+                        numMessages = Integer.parseInt(scanner.nextLine());
+                    } catch (NumberFormatException e) {
+                        System.out.println("Invalid number. Returning to menu.");
+                        continue;
+                    }
+                    
+                    // For Loop for sending messages
+                    for (int i = 1; i <= numMessages; i++) {
+                        System.out.println("\nMessage " + i + " of " + numMessages);
+                        
+                        // Validate Recipient Cell
+                        String recipient = "";
+                        Message tempMsg = null;
+                        boolean validRecipient = false;
+                        
+                        while (!validRecipient) {
+                            System.out.print("Enter recipient cell number (include international code, e.g., +27838968976): ");
+                            recipient = scanner.nextLine();
+                            
+                            // Create temp object just to test the recipient
+                            tempMsg = new Message(i, recipient, ""); 
+                            if (tempMsg.checkRecipientCell()) {
+                                validRecipient = true;
+                            } else {
+                                System.out.println("Cell phone number is incorrectly formatted or does not contain an international code.");
+                            }
+                        }
+                        
+                        // Validate Message Length (< 250 characters)
+                        String msgText = "";
+                        boolean validLength = false;
+                        
+                        while (!validLength) {
+                            System.out.print("Enter message text (max 250 characters): ");
+                            msgText = scanner.nextLine();
+                            
+                            if (msgText.length() <= 250) {
+                                validLength = true;
+                            } else {
+                                System.out.println("Please enter a message of less than 250 characters.");
+                            }
+                        }
+                        
+                        // Now create the final message object
+                        Message msg = new Message(i, recipient, msgText);
+                        
+                        // Send and Save
+                        String status = msg.sentMessage();
+                        System.out.println(status);
+                        
+                        msg.printMessageDetails();
+                        msg.saveToJson(); 
+                    }
+                    
+                } else if (choice.equals("2")) {
+                    System.out.println("Coming Soon.");
+                } else if (choice.equals("3")) {
+                    System.out.println("Exiting application. Goodbye!");
+                    System.out.println("Total messages sent: " + Message.getTotalMessagesSent());
+                    Message.closeJsonFile(); // Properly closes the JSON array
+                    running = false; 
+                } else {
+                    System.out.println("Invalid option. Please enter 1, 2, or 3.");
+                }
+            }
+        }
+        
+        scanner.close();
+    }
+}
 
 
 /*Reference list:
