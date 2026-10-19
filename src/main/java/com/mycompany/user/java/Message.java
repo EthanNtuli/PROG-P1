@@ -37,10 +37,10 @@ private String generateMessageID() {
         return messageID.length() == 10;
     }
 
-    public String checkRecipientCell() {
+    public String checkRecipientCell(String RecipientCell) {
        String regex = "^\\+27\\d{1,10}$";  //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
         if(RecipientCell.matches(regex)){
-            return "Cell phone number successfully addded."
+            return "Cell phone number successfully addded.";
         } else{
             return "Cell phone number incorrectly formatted or does not contain international.";
     }
