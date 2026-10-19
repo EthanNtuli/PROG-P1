@@ -17,7 +17,7 @@ public class Message {
     private String messageText;
     private String messageStatus;
 
-    private static StringBuilder allSentMessages = new StringBuilder();
+    private static StringBuilder allSentMessages = new StringBuilder();   //Oracle, 2024. StringBuilder (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html [Accessed 17 October 2026].
     private static int totalMessagesSent = 0;
 
     public Message(int messageNumber, String recipient, String messageText) {
@@ -29,9 +29,9 @@ public class Message {
     }
 
     private String generateMessageID() {
-        Random rand = new Random();
+        Random rand = new Random();   //Oracle, 2024. Random (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/util/Random.html [Accessed 17 October 2026].
         long number = (long) (rand.nextDouble() * 9_000_000_000L) + 1_000_000_000L;
-        return String.valueOf(number).substring(0, 10);
+        return String.valueOf(number).substring(0, 10);   //Oracle, 2024. String (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/lang/String.html [Accessed 17 October 2026].
     }
 
     public boolean checkMessageID() {
@@ -48,7 +48,7 @@ public class Message {
 
     public String checkRecipientCell(String RecipientCell) {
         String regex = "^\\+27\\d{1,10}$";  //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
-        if (RecipientCell.matches(regex)) {
+        if (RecipientCell.matches(regex)) {   //Oracle, 2024. Lesson: Regular Expressions [online]. The Java Tutorials. Available at: https://docs.oracle.com/javase/tutorial/essential/regex/ [Accessed 6 October 2026].
             return "Cell phone number successfully captured.";
         } else {
             return "Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.";
@@ -57,7 +57,7 @@ public class Message {
 
     public static String createMessageHash(String messageID, int messageNumber, String message) {
 
-        String firstTwoID = messageID.substring(0, 2);
+        String firstTwoID = messageID.substring(0, 2);   //Oracle, 2024. String (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/lang/String.html [Accessed 17 October 2026].
         String userMessage = message.trim();
 
         int firstSpace = userMessage.indexOf(" ");
@@ -72,7 +72,7 @@ public class Message {
         int lastSpace = userMessage.lastIndexOf(" ");
 
         String lastWord = userMessage.substring(lastSpace + 1);
-        lastWord = lastWord.replaceAll("[^A-Za-z0-9]", "");
+        lastWord = lastWord.replaceAll("[^A-Za-z0-9]", "");   //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 17 October 2026].
 
         String messageHash = firstTwoID + ":" + messageNumber + ":" + firstWord + lastWord;
         return messageHash.toUpperCase();
@@ -88,10 +88,10 @@ public class Message {
 
         String choice = scanner.nextLine();
 
-        if (choice.equals("1")) {
+        if (choice.equals("1")) {   //Oracle, 2024. The if-then and if-then-else Statements [online]. The Java Tutorials. Available at: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html [Accessed 17 October 2026].
             this.messageStatus = "Message successfully sent.";
             totalMessagesSent++;
-            // NO ARRAYS: Append to the StringBuilder
+            
             allSentMessages.append("- ").append(this.messageText).append("\n");
             return this.messageStatus;
 
@@ -121,7 +121,7 @@ public class Message {
         return totalMessagesSent;
     }
 
-    // NO ARRAYS: Return the StringBuilder contents as a String
+    
     public static String printMessages() {
         if (allSentMessages.length() == 0) {
             return "No messages sent yet.";
@@ -140,7 +140,7 @@ public class Message {
                 "}";
 
         try {
-            FileWriter writer = new FileWriter("messages.json", true);
+            FileWriter writer = new FileWriter("messages.json", true);   //Oracle, 2024. FileWriter (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/io/FileWriter.html [Accessed 17 October 2026].
             writer.write(jsonString + ",\n");
             writer.close();
             System.out.println("Message successfully stored in JSON.");
@@ -163,3 +163,20 @@ public class Message {
     public String getMessageText() { return messageText; }
     public String getRecipient() { return recipient; }
 }
+
+
+/*Reference list:
+Oracle, 2024. FileWriter (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/io/FileWriter.html [Accessed 17 October 2026].
+
+Oracle, 2024. Lesson: Regular Expressions [online]. The Java Tutorials. Available at: https://docs.oracle.com/javase/tutorial/essential/regex/ [Accessed 6 October 2026].
+
+Oracle, 2024. Random (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/util/Random.html [Accessed 17 October 2026].
+
+Oracle, 2024. StringBuilder (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html [Accessed 17 October 2026].
+
+Oracle, 2024. String (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/lang/String.html [Accessed 17 October 2026].
+
+Oracle, 2024. The if-then and if-then-else Statements [online]. The Java Tutorials. Available at: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/if.html [Accessed 17 October 2026].
+
+Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
+*/
