@@ -46,26 +46,27 @@ private String generateMessageID() {
     }
     }
 
-    // NO ARRAYS: Completely rewritten to use indexOf and substring instead of split()
-    public String createMessageHash() {
-        String text = messageText.trim();
-        String firstWord = "";
-        String lastWord = "";
 
-        int firstSpace = text.indexOf(" ");
-        int lastSpace = text.lastIndexOf(" ");
+public static String createMessageHash(String messageID, int messageNumber, String message) {
+
+        String firstTwoID = messageID.substring(0, 2);
+        String userMessage = message.trim();
+
+        int firstSpace = userMessage.indexOf(" ");
+        String firstWord;
 
         if (firstSpace == -1) {
-            // It's a single word
-            firstWord = text;
-            lastWord = text;
+            firstWord = userMessage;
         } else {
-            firstWord = text.substring(0, firstSpace);
-            lastWord = text.substring(lastSpace + 1);
+            firstWord = userMessage.substring(0, firstSpace);
         }
 
-        String hash = messageID.substring(0, 2) + ":" + messageNumber + ":" + firstWord + lastWord;
-        return hash.toUpperCase();
+        int lastSpace = userMessage.lastIndexOf(" ");
+
+        String lastWord = userMessage.substring(lastSpace + 1);
+
+        String messageHash = firstTwoID + ":" + messageNumber + ":" + firstWord + lastWord;
+        return messageHash.toUpperCase();
     }
 
     public String sentMessage(Scanner scanner) {
