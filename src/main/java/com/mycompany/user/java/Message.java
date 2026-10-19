@@ -158,3 +158,8 @@ public class Message {
         System.out.println("-----------------------");
     }
 
+    public String getMessageID() { return messageID; }
+    public String getMessageHash() { return messageHash; }
+    public String getMessageText() { return messageText; }
+    public String getRecipient() { return recipient; }
+}
