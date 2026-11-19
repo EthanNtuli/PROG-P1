@@ -86,10 +86,10 @@ public class MessageStoreTest {
         assertTrue(report.contains("20:2:WHERETIME"));
         assertTrue(report.contains("+27838884567"));
         assertTrue(report.contains("It is dinner time!"));
-        assertFalse(report.contains("Yohoooo")); // disregarded messages are not reported
+        assertFalse(report.contains("Yohoooo"));
     }
 
-    // Stores two messages and reads them back: proves the JSON is a valid array and loads into the arrays.
+    
     @Test
     public void testJsonStoreAndLoad(@TempDir java.nio.file.Path dir) {
         String file = dir.resolve("test-messages.json").toString();
@@ -115,6 +115,6 @@ public class MessageStoreTest {
     public void testDisplayStoredMessages() {
         String shown = store.displayStoredMessages();
         assertTrue(shown.contains("Ok, I am leaving without you."));
-        assertFalse(shown.contains("Did you get the cake?")); // sent, not stored
+        assertFalse(shown.contains("Did you get the cake?"));
     }
 }
