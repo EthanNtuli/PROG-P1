@@ -109,7 +109,7 @@ public class UserTest {
     public void testReturnLoginStatus_Failed() {
         User login = new User("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
         
-        String expected = "Username or password incorrect, pleas try again.";
+        String expected = "Username or password incorrect, please try again.";
         
         assertEquals(expected, login.returnLoginStatus("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "kyl_1", "wrongPassword"));
     }
