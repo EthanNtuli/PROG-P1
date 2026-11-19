@@ -110,5 +110,21 @@
     "messageText": "Hi Mike, can you join us for dinner tonight?",
     "messageHash": "64:0:HITONIGHT",
     "flag": "Stored"
+  },
+  {
+    "messageID": "3955169613",
+    "messageNumber": 0,
+    "recipient": "+27718693002",
+    "messageText": "Hi Mike, can you join us for dinner tonight?",
+    "messageHash": "39:0:HITONIGHT",
+    "flag": "Stored"
+  },
+  {
+    "messageID": "7231893877",
+    "messageNumber": 0,
+    "recipient": "+27718693002",
+    "messageText": "Hi Mike, can you join us for dinner tonight?",
+    "messageHash": "72:0:HITONIGHT",
+    "flag": "Stored"
   }
 ]
