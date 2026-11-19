@@ -19,7 +19,7 @@ public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        // ---- Part 1: registration (repeats until it succeeds) ----
+        // ---- Part 1: registration ----
         String firstName, lastName, username, password;
         User obj;
         String registerResult;
