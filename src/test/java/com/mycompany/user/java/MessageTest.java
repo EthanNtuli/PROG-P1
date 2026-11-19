@@ -4,73 +4,115 @@
  */
 package com.mycompany.user.java;
 
+import java.util.Scanner;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class MessageTest {
 
-    @Test
-    public void testMessageIDLength() {
-        Message msg = new Message(1, "Test message", "+27838968976");
-        assertEquals(2, msg.getMessageID().length(), "Message ID must be 2 characters long");
+    // Test 1: Message ID is created
+    @Test   //Java Brains, 2019. JUnit 5 Basics [YouTube playlist]. Available at: https://www.youtube.com/watch?v=2E3WqYupx7c&list=PLqq-6Pq4ITTa4ad5JISViSb2FVG8Vwa4o [Accessed 6 October 2026].
+    public void testMessageIDGenerated() {
+        Message message = new Message(1, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
+
+        assertNotNull(message.getMessageID());
+        assertEquals(10, message.getMessageID().length());
+        assertTrue(message.checkMessageID());
     }
 
+    // Test 2: Message 2 data, user selects Discard
     @Test
-    public void testMessageIDIsNumeric() {
-        Message msg = new Message(1, "Test message", "+27838968976");
-        String id = msg.getMessageID();
-        boolean isNumeric = id.matches("[0-9]+");
-        assertTrue(isNumeric, "Message ID should only contain numeric characters");
+    public void testMessage2Discard() {
+        Message message2 = new Message(2, "08575975889", "Hi Keegan, did you receive the payment?");
+
+        int totalBefore = Message.returnTotalMessagess();
+
+        // Select Discard (option 2), then enter 0 to confirm deletion
+        Scanner input = new Scanner("2\n0\n");   //Oracle, 2024. Scanner (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html [Accessed 17 October 2026].
+        String result = message2.sentMessage(input);
+
+        assertEquals("Message deleted by user.", result);
+        assertEquals(totalBefore, Message.returnTotalMessagess());
     }
 
+    // Test 3: Message length success
     @Test
-    public void testMessageHashCreation_MultipleWords() {
-        Message msg = new Message(1, "Hi Mike, can you join us for dinner tonight?", "+27838968976");
-        String expectedHash = msg.getMessageID() + ":1:HITONIGHT?";
-        assertEquals(expectedHash, msg.getMessageHash(), "Hash must be uppercase and follow format: ID:Num:FIRSTLAST");
+    public void testMessageLengthSuccess() {
+        Message message = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
+        assertEquals("Message ready to send.", message.checkMessageLength());
     }
 
+    // Test 4: Message length failure (260 characters = 10 over the limit)
     @Test
-    public void testMessageHashCreation_SingleWord() {
-        Message msg = new Message(2, "Hello", "+27838968976");
-        String expectedHash = msg.getMessageID() + ":2:HELLOHELLO";
-        assertEquals(expectedHash, msg.getMessageHash(), "Single word hash should repeat the word");
+    public void testMessageLengthFailure() {
+        String longText = "a".repeat(260);   //Oracle, 2024. String (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/lang/String.html [Accessed 17 October 2026].
+        Message message = new Message(0, "+27718693002", longText);
+        assertEquals("Message exceeds 250 characters by 10; please reduce the size.",
+                message.checkMessageLength());
     }
 
+    // Test 5: Recipient number success
     @Test
-    public void testMessageHashCreation_ExtraSpaces() {
-        Message msg = new Message(3, "  Hi   there  ", "+27838968976");
-        String expectedHash = msg.getMessageID() + ":3:HITHERE";
-        assertEquals(expectedHash, msg.getMessageHash(), "Hash should trim and handle extra spaces correctly");
+    public void testRecipientNumberSuccess() {
+        Message message = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
+        assertEquals("Cell phone number successfully captured.",
+                message.checkRecipientCell("+27718693002"));   //Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
     }
 
+    // Test 6: Recipient number failure
     @Test
-    public void testMessageNumberIncrement() {
-        Message msg1 = new Message(1, "First", "+27838968976");
-        Message msg2 = new Message(5, "Fifth", "+27838968976");
-        
-        assertTrue(msg1.getMessageHash().contains(":1:"), "Hash should contain message number 1");
-        assertTrue(msg2.getMessageHash().contains(":5:"), "Hash should contain message number 5");
+    public void testRecipientNumberFailure() {
+        Message message = new Message(1, "08575975889", "Hi Keegan, did you receive the payment?");
+        assertEquals("Cell phone number is incorrectly formatted or does not contain an international code. Please correct the number and try again.",
+                message.checkRecipientCell("08575975889"));
     }
 
+    // Test 7: Message hash
     @Test
-    public void testMessageTextDisplay() {
-        String text = "This is a test message";
-        Message msg = new Message(1, text, "+27838968976");
-        assertEquals(text, msg.getMessageText(), "Message text should match what was entered");
+    public void testMessageHash() {
+        String hash = Message.createMessageHash("0012345678", 0, "Hi Mike, can you join us for dinner tonight?");
+        assertEquals("00:0:HITONIGHT", hash);
     }
 
+    // Test 8: Send message (option 1)
     @Test
-    public void testMessageRecipient() {
-        String recipient = "+27838968976";
-        Message msg = new Message(1, "Test", recipient);
-        assertEquals(recipient, msg.getRecipient(), "Recipient number should be stored correctly");
+    public void testSendMessage() {
+        Message message = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
+        assertEquals("Message successfully sent.", message.sentMessage(new Scanner("1\n")));
     }
 
+    // Test 9: Store message (option 3)
     @Test
-    public void testEmptyMessageText() {
-        Message msg = new Message(1, "", "+27838968976");
-        assertNotNull(msg.getMessageHash(), "Hash should still be generated even if message is empty");
-        assertTrue(msg.getMessageHash().contains(":1:"), "Hash should still contain the message number");
+    public void testStoreMessage() {
+        Message message = new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?");
+        assertEquals("Message successfully stored.", message.sentMessage(new Scanner("3\n")));
+    }
+
+    // Test 10: Return total number sent
+    @Test
+    public void testReturnTotalNumberSent() {
+        int before = Message.returnTotalMessagess();
+
+        new Message(0, "+27718693002", "Hi Mike, can you join us for dinner tonight?")
+                .sentMessage(new Scanner("1\n"));
+        new Message(1, "08575975889", "Hi Keegan, did you receive the payment?")
+                .sentMessage(new Scanner("1\n"));
+
+        assertEquals(before + 2, Message.returnTotalMessagess());
     }
 }
+
+
+/*Reference list:
+Java Brains, 2019. JUnit 5 Basics [YouTube playlist]. Available at: https://www.youtube.com/watch?v=2E3WqYupx7c&list=PLqq-6Pq4ITTa4ad5JISViSb2FVG8Vwa4o [Accessed 14 September 2026].
+
+NetBeans, 2024. JUnit 5 Tutorial [online]. Apache NetBeans. Available at: https://netbeans.apache.org/tutorial/main/kb/docs/java/junit-intro/ [Accessed 14 September 2026].
+
+Oracle, 2024. Scanner (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/util/Scanner.html [Accessed 17 October 2026].
+
+Oracle, 2024. String (Java Platform SE 8) [online]. Java Platform API Specification. Available at: https://docs.oracle.com/javase/8/docs/api/java/lang/String.html [Accessed 17 October 2026].
+
+Regex101, 2024. Online Regex Tester and Debugger [online]. Available at: https://regex101.com/ [Accessed 11 October 2026].
+
+Stack Overflow, 2023. How to fix "java: package org.junit.jupiter.api does not exist" [online]. Available at: https://stackoverflow.com/questions/75092698/ [Accessed 14 September 2026].
+*/

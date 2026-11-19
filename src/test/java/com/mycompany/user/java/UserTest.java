@@ -96,18 +96,22 @@ public class UserTest {
                 login.registerUser());
     }
 
-    @Test
+       @Test
     public void testReturnLoginStatus_Successful() {
         User login = new User("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        login.loginUser("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "kyl_1", "Ch&&sec@ke99!");
-        assertEquals("Login was successful", login.returnLoginStatus("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "kyl_1", "Ch&&sec@ke99!"));
+        
+        String expected = "Welcome Kyle, Smith it is great to see you again.";
+        
+        assertEquals(expected, login.returnLoginStatus("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "kyl_1", "Ch&&sec@ke99!"));
     }
 
-    @Test
+       @Test
     public void testReturnLoginStatus_Failed() {
         User login = new User("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "+27838968976");
-        login.loginUser("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "kyl_1", "wrongPassword");
-        assertEquals("Login was Unsuccessful", login.returnLoginStatus("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "kyl_1", "wrongPassword"));
+        
+        String expected = "Username or password incorrect, please try again.";
+        
+        assertEquals(expected, login.returnLoginStatus("Kyle", "Smith", "kyl_1", "Ch&&sec@ke99!", "kyl_1", "wrongPassword"));
     }
 }
 

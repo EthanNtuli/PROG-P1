@@ -1,147 +1,178 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
-
 /**
  *
  * @author Anele
  */
+
 package com.mycompany.user.java;
 
 import java.util.Scanner;
 
 public class Main {
-    
-    //Runs the console flow: collects registration details, then attempts a login.
+
+    private static final String REGISTERED = "Registration successful! You may now log in.";
+    private static final int MAX_LOGIN_ATTEMPTS = 3;
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Registration");         //Java Brains, 2019. JUnit 5 Basics [YouTube playlist]. Available at: https://www.youtube.com/watch?v=2E3WqYupx7c&list=PLqq-6Pq4ITTa4ad5JISViSb2FVG8Vwa4o [Accessed 14 September 2026].
+        // ---- Part 1: registration ----
+        String firstName, lastName, username, password;
+        User obj;
+        String registerResult;
+        do {
+            System.out.println("Registration");
+            firstName = ask(scanner, "Enter first name: ");
+            lastName = ask(scanner, "Enter last name: ");
+            username = ask(scanner, "Enter username (must contain '_' and be no more than 5 characters): ");
+            password = ask(scanner, "Enter password (8+ chars, a capital letter, a number, a special character): ");
+            String cellPhoneNumber = ask(scanner, "Enter cell phone number (e.g. +27838968976): ");
 
-        System.out.print("Enter first name: ");
-        String firstName = scanner.nextLine();
+            obj = new User(firstName, lastName, username, password, cellPhoneNumber);
+            registerResult = obj.registerUser();
+        } while (!registerResult.equals(REGISTERED));
 
-        System.out.print("Enter last name: ");
-        String lastName = scanner.nextLine();
-
-        System.out.print("Enter username (must contain '_' and be no more than 5 characters): ");
-        String username = scanner.nextLine();
-
-        System.out.print("Enter password (8+ chars, a capital letter, a number, a special character): ");
-        String password = scanner.nextLine();
-
-        System.out.print("Enter cell phone number (e.g. +27838968976): ");
-        String cellPhoneNumber = scanner.nextLine();
-
-        User obj = new User(firstName, lastName, username, password, cellPhoneNumber);
-        obj.registerUser();
-        String registerResult = obj.registerUser();
-        String loginUsername = "";
-        String loginPassword = "";
-        
-        if(registerResult.equals("Registration successful! You may now log in.")){
-        System.out.print("Enter username: ");
-        loginUsername = scanner.nextLine();           //Java Brains, 2019. JUnit 5 Basics [YouTube playlist]. Available at: https://www.youtube.com/watch?v=2E3WqYupx7c&list=PLqq-6Pq4ITTa4ad5JISViSb2FVG8Vwa4o [Accessed 14 September 2026].
-        
-        System.out.print("Enter password: ");
-        loginPassword = scanner.nextLine();
-        }else {
-            System.out.println("Password or Username are invalid.");
+        boolean isLoggedIn = false;
+        for (int attempt = 1; attempt <= MAX_LOGIN_ATTEMPTS && !isLoggedIn; attempt++) {
+            String loginUsername = ask(scanner, "Enter username: ");
+            String loginPassword = ask(scanner, "Enter password: ");
+            isLoggedIn = obj.loginUser(firstName, lastName, username, password, loginUsername, loginPassword);
         }
-        
-        System.out.println(obj.returnLoginStatus(firstName, lastName, username, password, loginUsername, loginPassword));
-        
-}
 
-// --- PART 2: MENU, LOOPS & MESSAGES ---
-        if (isLoggedIn) {
-            System.out.println("\nWelcome to the Chat App!");
-            boolean running = true;
-            
-            while (running) {
-                // Exact Menu from Rubric
-                System.out.println("\n--- MENU ---");
-                System.out.println("1) Send Messages");
-                System.out.println("2) Show recently sent messages");
-                System.out.println("3) Quit");
-                System.out.print("Choose an option (1-3): ");
-                
-                String choice = scanner.nextLine();
+        if (!isLoggedIn) {
+            System.out.println("Too many failed login attempts. Goodbye.");
+            scanner.close();
+            return;
+        }
 
-                if (choice.equals("1")) {
-                    System.out.print("How many messages do you want to send? ");
-                    int numMessages = 0;
-                    
-                    try {
-                        numMessages = Integer.parseInt(scanner.nextLine());
-                    } catch (NumberFormatException e) {
-                        System.out.println("Invalid number. Returning to menu.");
-                        continue;
-                    }
-                    
-                    // For Loop for sending messages
-                    for (int i = 1; i <= numMessages; i++) {
-                        System.out.println("\nMessage " + i + " of " + numMessages);
-                        
-                        // Validate Recipient Cell
-                        String recipient = "";
-                        Message tempMsg = null;
-                        boolean validRecipient = false;
-                        
-                        while (!validRecipient) {
-                            System.out.print("Enter recipient cell number (include international code, e.g., +27838968976): ");
-                            recipient = scanner.nextLine();
-                            
-                            // Create temp object just to test the recipient
-                            tempMsg = new Message(i, recipient, ""); 
-                            if (tempMsg.checkRecipientCell()) {
-                                validRecipient = true;
-                            } else {
-                                System.out.println("Cell phone number is incorrectly formatted or does not contain an international code.");
-                            }
-                        }
-                        
-                        // Validate Message Length (< 250 characters)
-                        String msgText = "";
-                        boolean validLength = false;
-                        
-                        while (!validLength) {
-                            System.out.print("Enter message text (max 250 characters): ");
-                            msgText = scanner.nextLine();
-                            
-                            if (msgText.length() <= 250) {
-                                validLength = true;
-                            } else {
-                                System.out.println("Please enter a message of less than 250 characters.");
-                            }
-                        }
-                        
-                        // Now create the final message object
-                        Message msg = new Message(i, recipient, msgText);
-                        
-                        // Send and Save
-                        String status = msg.sentMessage();
-                        System.out.println(status);
-                        
-                        msg.printMessageDetails();
-                        msg.saveToJson(); 
-                    }
-                    
-                } else if (choice.equals("2")) {
-                    System.out.println("Coming Soon.");
-                } else if (choice.equals("3")) {
-                    System.out.println("Exiting application. Goodbye!");
-                    System.out.println("Total messages sent: " + Message.getTotalMessagesSent());
-                    Message.closeJsonFile(); // Properly closes the JSON array
-                    running = false; 
+        System.out.println("\nWelcome to QuickChat.");
+        int numMessages = readInt(scanner, "How many messages do you wish to enter? ");
+        boolean messagesEntered = false;
+        MessageStore store = new MessageStore();
+        boolean running = true;
+
+        // The application runs until the user chooses Quit.
+        while (running) {
+            System.out.println("\n--- MENU ---");
+            System.out.println("1) Send Messages");
+            System.out.println("2) Show recently sent messages");
+            System.out.println("3) Quit");
+            System.out.println("4) Stored Messages");
+            int choice = readInt(scanner, "Choose an option (1-4): ");
+
+            if (choice == 1) {
+                if (messagesEntered) {
+                    System.out.println("You have already entered your " + numMessages + " messages.");
                 } else {
-                    System.out.println("Invalid option. Please enter 1, 2, or 3.");
+                    sendMessages(scanner, numMessages, store);
+                    messagesEntered = true;
                 }
+            } else if (choice == 2) {
+                System.out.println("Coming Soon.");
+            } else if (choice == 3) {
+                System.out.println("Exiting application. Goodbye!");
+                running = false;
+            } else if (choice == 4) {
+                storedMessagesMenu(scanner, store, username);
+            } else {
+                System.out.println("Invalid option. Please enter 1, 2, 3 or 4.");
             }
         }
-        
+
+        System.out.println("Total messages sent: " + Message.returnTotalMessagess());
         scanner.close();
+    }
+
+    // The for loop runs exactly the number of messages the user chose at the start.
+    private static void sendMessages(Scanner scanner, int numMessages, MessageStore store) {
+        for (int i = 0; i < numMessages; i++) {
+            System.out.println("\nMessage " + (i + 1) + " of " + numMessages);
+
+            // Recipient: ask until the cell number is valid.
+            String recipient;
+            Message tempMsg;
+            do {
+                recipient = ask(scanner, "Enter recipient cell number (e.g. +27838968976): ");
+                tempMsg = new Message(i, recipient, "");
+                System.out.println(tempMsg.checkRecipientCell(recipient));
+            } while (!tempMsg.isRecipientValid(recipient));
+
+            // Message text: ask until it is 250 characters or fewer.
+            String msgText;
+            Message msg;
+            do {
+                msgText = ask(scanner, "Enter message text (max 250 characters): ");
+                msg = new Message(i, recipient, msgText);
+                System.out.println(msg.checkMessageLength());
+            } while (!msg.isMessageLengthValid());
+
+            // The user chooses first; details are shown AFTER the choice.
+            String status = msg.sentMessage(scanner);
+            System.out.println("\nResult: " + status);
+            if (msg.getFlag().equals(Message.FLAG_SENT)) {
+                msg.printDetails();
+            }
+            store.addMessage(msg); // fills the Sent / Disregarded / Stored arrays plus hashes and IDs
+        }
+        System.out.println("\nTotal messages sent: " + Message.returnTotalMessagess());
+    }
+
+
+    private static void storedMessagesMenu(Scanner scanner, MessageStore store, String sender) {
+        int loaded = store.loadStoredFromJson(Message.DEFAULT_JSON_FILE);
+        System.out.println("Loaded " + loaded + " stored message(s) from " + Message.DEFAULT_JSON_FILE);
+        boolean back = false;
+        while (!back) {
+            System.out.println("\n--- STORED MESSAGES ---");
+            System.out.println("1) Display sender and recipient of stored messages");
+            System.out.println("2) Display the longest stored message");
+            System.out.println("3) Search for a message ID");
+            System.out.println("4) Search messages for a recipient");
+            System.out.println("5) Delete a message using its hash");
+            System.out.println("6) Display report");
+            System.out.println("0) Back to main menu");
+            int choice = readInt(scanner, "Choose an option: ");
+
+            if (choice == 1) {
+                System.out.println(store.displaySenderAndRecipient(sender));
+            } else if (choice == 2) {
+                System.out.println(store.longestStoredMessage());
+            } else if (choice == 3) {
+                String id = ask(scanner, "Enter message ID: ");
+                System.out.println("Recipient: " + store.getRecipientByID(id));
+                System.out.println("Message: " + store.getMessageByID(id));
+            } else if (choice == 4) {
+                java.util.List<String> found = store.searchByRecipient(ask(scanner, "Enter recipient number: "));
+                System.out.println(found.isEmpty() ? "No messages found." : String.join("\n", found));
+            } else if (choice == 5) {
+                System.out.println(store.deleteByHash(ask(scanner, "Enter message hash: ").toUpperCase()));
+            } else if (choice == 6) {
+                System.out.println(store.displayReport());
+            } else if (choice == 0) {
+                back = true;
+            } else {
+                System.out.println("Please choose a listed option.");
+            }
+        }
+    }
+
+    private static String ask(Scanner scanner, String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+
+    // Reads a whole number without crashing on bad input.
+    private static int readInt(Scanner scanner, String prompt) {
+        while (true) {
+            try {
+                return Integer.parseInt(ask(scanner, prompt));
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a whole number.");
+            }
+        }
     }
 }
 
