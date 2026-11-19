@@ -11,10 +11,6 @@ package com.mycompany.user.java;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Part 3: holds the message arrays. The master lists (IDs, hashes, recipients, texts, flags)
- * are parallel: index i in each list describes the same message.
- */
 public class MessageStore {
 
     private final ArrayList<String> messageIDs = new ArrayList<>();
@@ -52,8 +48,7 @@ public class MessageStore {
         addMessage(message.getMessageID(), message.getMessageNumber(), message.getRecipient(),
                 message.getMessageText(), message.getFlag());
     }
-
-    // Reads the JSON file into the arrays as stored messages, skipping IDs already loaded.
+    
     public int loadStoredFromJson(String fileName) {
         int added = 0;
         for (Message m : Message.readStoredMessages(fileName)) {
@@ -66,7 +61,7 @@ public class MessageStore {
         return added;
     }
 
-    // 2a: sender and recipient of every stored message.
+    //sender and recipient of every stored message.
     public String displaySenderAndRecipient(String sender) {
         StringBuilder out = new StringBuilder();
         for (int i = 0; i < messageTexts.size(); i++) {
@@ -78,7 +73,6 @@ public class MessageStore {
         return out.length() == 0 ? "No stored messages." : out.toString();
     }
 
-    // 2b: longest stored message.
     public String longestStoredMessage() {
         String longest = "";
         for (int i = 0; i < messageTexts.size(); i++) {
@@ -122,7 +116,6 @@ public class MessageStore {
         return count == 0 ? "No stored messages." : out.toString();
     }
 
-    // 2c: look up by message ID.
     public String getMessageByID(String id) {
         int index = messageIDs.indexOf(id);
         return index == -1 ? "Message ID not found." : messageTexts.get(index);
@@ -133,7 +126,6 @@ public class MessageStore {
         return index == -1 ? "Message ID not found." : recipients.get(index);
     }
 
-    // 2d: every sent or stored message for one recipient.
     public List<String> searchByRecipient(String recipient) {
         List<String> found = new ArrayList<>();
         for (int i = 0; i < messageTexts.size(); i++) {
@@ -145,7 +137,6 @@ public class MessageStore {
         return found;
     }
 
-    // 2e: delete by hash, removing the message from every array.
     public String deleteByHash(String hash) {
         int index = messageHashes.indexOf(hash);
         if (index == -1) {
@@ -170,7 +161,6 @@ public class MessageStore {
         return "Message: \"" + text + "\" successfully deleted.";
     }
 
-    // 2f: report of every sent and stored message.
     public String displayReport() {
         StringBuilder report = new StringBuilder("--- Message Report ---\n");
         int count = 0;
