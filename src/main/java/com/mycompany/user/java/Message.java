@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- * A single QuickChat message: ID, hash, recipient, text and what the user did with it.
- */
 public class Message {
 
     // Shared message strings. Main compares against these constants, so the two can never drift apart.
@@ -61,7 +58,7 @@ public class Message {
         this.messageHash = createMessageHash(messageID, messageNumber, messageText);
     }
 
-    // Builds a random ten-digit ID using substring (kept from the original Part 2 submission).
+    // Builds a random ten-digit ID using substring
     private static String generateMessageID() {
         Random rand = new Random(); // Oracle, 2024. Random (Java Platform SE 8) [online]. Java Platform API Specification.
         long number = (long) (rand.nextDouble() * 9_000_000_000L) + 1_000_000_000L;
@@ -80,7 +77,6 @@ public class Message {
         return "Message exceeds 250 characters by " + (length - MAX_LENGTH) + "; please reduce the size.";
     }
 
-    // International code (+) followed by no more than ten digits.
     public String checkRecipientCell(String cell) {
         return isRecipientValid(cell) ? CELL_SUCCESS : CELL_FAILURE;
     }
@@ -96,7 +92,6 @@ public class Message {
         return messageText.length() <= MAX_LENGTH;
     }
 
-    // Hash = first two ID digits : message number : first word + last word, upper case, punctuation removed.
     public static String createMessageHash(String messageID, int messageNumber, String text) {
         String firstTwoID = messageID.substring(0, 2);
         String trimmed = text.trim();
@@ -105,7 +100,6 @@ public class Message {
         String firstWord = (firstSpace == -1) ? trimmed : trimmed.substring(0, firstSpace);
         String lastWord = trimmed.substring(trimmed.lastIndexOf(' ') + 1);
 
-        // Strip punctuation from BOTH words (previously only the last word was cleaned).
         firstWord = removePunctuation(firstWord);
         lastWord = removePunctuation(lastWord);
 
@@ -168,8 +162,6 @@ public class Message {
         storeMessage(DEFAULT_JSON_FILE);
     }
 
-    // Reads the existing JSON array, adds this message and writes the whole array back,
-    // so the file is always valid JSON (a proper array with no trailing commas).
     public void storeMessage(String fileName) {
         List<Message> all = readStoredMessages(fileName);
         all.add(this);

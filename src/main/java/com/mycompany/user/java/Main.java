@@ -11,10 +11,6 @@ package com.mycompany.user.java;
 
 import java.util.Scanner;
 
-/**
- * QuickChat Part 3: register, log in, then send messages, and manage stored messages.
- * Part 1 (User.java) is used exactly as submitted.
- */
 public class Main {
 
     private static final String REGISTERED = "Registration successful! You may now log in.";
@@ -39,7 +35,6 @@ public class Main {
             registerResult = obj.registerUser();
         } while (!registerResult.equals(REGISTERED));
 
-        // ---- Part 1: login (the result is now really used) ----
         boolean isLoggedIn = false;
         for (int attempt = 1; attempt <= MAX_LOGIN_ATTEMPTS && !isLoggedIn; attempt++) {
             String loginUsername = ask(scanner, "Enter username: ");
@@ -47,7 +42,6 @@ public class Main {
             isLoggedIn = obj.loginUser(firstName, lastName, username, password, loginUsername, loginPassword);
         }
 
-        // ---- Part 2: only a successful login opens QuickChat ----
         if (!isLoggedIn) {
             System.out.println("Too many failed login attempts. Goodbye.");
             scanner.close();
@@ -127,7 +121,6 @@ public class Main {
     }
 
 
-    // Part 3: the fourth menu option, using the arrays in MessageStore.
     private static void storedMessagesMenu(Scanner scanner, MessageStore store, String sender) {
         int loaded = store.loadStoredFromJson(Message.DEFAULT_JSON_FILE);
         System.out.println("Loaded " + loaded + " stored message(s) from " + Message.DEFAULT_JSON_FILE);
